@@ -121,6 +121,39 @@ const STATIC_PRODUCTS = [
     }
   },
   {
+    id: "haiti-5panel-classic",
+    variantId: "gid://shopify/ProductVariant/43081754935373", // SKU: 7216013_24381
+    category: "Structured",
+    views: {
+      front: "/haiti-5panel-front.jpg",
+      left: "/haiti-5panel-side.jpg",
+      right: "/haiti-5panel-side.jpg"
+    },
+    name: "The Heritage Cap",
+    accentName: "Forest Classic",
+    description: "Two-tone cream and forest green classic structured cap featuring high-density embroidery detailing the map of Haiti and local flora. Complete with commemorative side flank flag patch and icons.",
+    price: 30.00,
+    colorway: "Cream / Forest Classic",
+    hex: "#18453B",
+    accentBg: "bg-forest",
+    accentText: "text-forest",
+    hoverBorder: "hover:border-forest",
+    focusRing: "focus:ring-forest",
+    badge: "Classic Series",
+    features: [
+      "High-density floral map outline embroidery",
+      "Haitian flag side patch and 1974 milestone graphics",
+      "Structured mid-profile crown profile",
+      "Forest green visor, button, and eyelets",
+      "Premium adjustable snapback closure"
+    ],
+    details: {
+      map: "Finely stitched outline of Haiti's historic borders in forest green.",
+      flora: "Hibiscus blooms and leaves woven directly inside the map contour.",
+      side: "Haitian bicolor flag and commemorative year markers celebrating national history."
+    }
+  },
+  {
     id: "haiti-dad-hat-red",
     variantId: "gid://shopify/ProductVariant/43088054550605", // Dad hat cranberry
     category: "Unstructured",
@@ -318,6 +351,7 @@ function App() {
     "haiti-embroidered-hat-red": "front",
     "haiti-embroidered-hat-blue": "front",
     "haiti-embroidered-hat-green": "front",
+    "haiti-5panel-classic": "front",
     "haiti-dad-hat-red": "front",
     "haiti-dad-hat-white": "front",
     "haiti-dad-hat-black": "front",
