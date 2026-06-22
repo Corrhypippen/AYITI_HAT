@@ -665,7 +665,7 @@ function App() {
                 <span>{products[activeHeroIndex]?.badge || ''}</span>
               </div>
 
-              <h1 className="font-display font-black text-5xl sm:text-6xl xl:text-7xl uppercase text-neutral-900 leading-[0.9] tracking-tighter">
+              <h1 className="font-display font-black text-4xl sm:text-5xl xl:text-7xl uppercase text-neutral-900 leading-[0.9] tracking-tighter">
                 CULTURE <br className="hidden sm:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-950 via-neutral-700 to-neutral-950">
                   WEAVED
@@ -679,7 +679,7 @@ function App() {
             </div>
 
             {/* Right Large Hat Preview with interactive effects */}
-            <div className="col-span-1 lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-5 flex flex-col items-center justify-center relative min-h-[320px] sm:min-h-[400px] order-2 z-10">
+            <div className="col-span-1 lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-5 flex flex-col items-center justify-center relative min-h-[280px] sm:min-h-[400px] order-2 z-10">
               {/* Decorative background element */}
               <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-neutral-200/40 mix-blend-multiply filter blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
 
@@ -708,18 +708,18 @@ function App() {
             </div>
 
             {/* Color & Angle selectors */}
-            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-2 flex flex-wrap items-center justify-center lg:justify-start gap-6 order-3 pt-2">
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 order-3 pt-2">
               {/* Variant swatches */}
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Hat:</span>
-                <div className="flex flex-wrap items-center gap-2 bg-neutral-200/50 p-1.5 rounded-full border border-neutral-300/30">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 shrink-0">Hat:</span>
+                <div className="flex items-center gap-2 bg-neutral-200/50 p-1.5 rounded-full border border-neutral-300/30 overflow-x-auto max-w-[calc(100vw-8rem)] scrollbar-none">
                   {products.map((prod, index) => {
                     const isLightColor = prod.hex === '#FDFBF7' || prod.hex === '#D4AF37';
                     return (
                       <button
                         key={prod.id}
                         onClick={() => { setActiveHeroIndex(index); setHeroView("front"); }}
-                        className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center cursor-pointer ${
+                        className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center cursor-pointer shrink-0 ${
                           activeHeroIndex === index ? 'border-neutral-900 scale-110' : 'border-transparent opacity-70 hover:opacity-100'
                         }`}
                         style={{ backgroundColor: prod.hex }}
@@ -779,16 +779,16 @@ function App() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-4 flex items-center justify-center lg:justify-start gap-4 order-5 w-full">
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-4 flex items-center justify-center lg:justify-start gap-3 order-5 w-full">
               <a
                 href="#collection"
-                className="flex-1 sm:flex-initial text-center bg-neutral-900 hover:bg-neutral-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:shadow-xl hover:shadow-neutral-900/10 active:scale-95"
+                className="flex-1 text-center bg-neutral-900 hover:bg-neutral-800 text-white px-6 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:shadow-xl hover:shadow-neutral-900/10 active:scale-95"
               >
                 Explore Drop
               </a>
               <button
                 onClick={() => products[activeHeroIndex] && addToCart(products[activeHeroIndex])}
-                className="flex-1 sm:flex-initial bg-white hover:bg-neutral-100 text-neutral-900 border border-neutral-300 hover:border-neutral-400 px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
+                className="flex-1 bg-white hover:bg-neutral-100 text-neutral-900 border border-neutral-300 hover:border-neutral-400 px-6 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
               >
                 <span>Buy Now</span>
                 <ChevronRight className="w-4 h-4" />
@@ -1292,8 +1292,8 @@ function App() {
           />
 
           {/* Drawer content */}
-          <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            <div ref={cartRef} className="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full border-l border-neutral-200/50">
+          <div className="absolute inset-y-0 right-0 max-w-full flex w-full sm:pl-10 sm:max-w-md">
+            <div ref={cartRef} className="w-full bg-white shadow-2xl flex flex-col h-full border-l border-neutral-200/50">
               
               {/* Header */}
               <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
@@ -1433,7 +1433,7 @@ function App() {
           />
 
           {/* Modal Content */}
-          <div ref={quickViewRef} className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-neutral-200/50 overflow-y-auto max-h-[90vh] flex flex-col md:flex-row z-10 animate-scale-up">
+          <div ref={quickViewRef} className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-neutral-200/50 overflow-y-auto max-h-[95vh] flex flex-col md:flex-row z-10 animate-scale-up">
             
             {/* Close Button */}
             <button 
@@ -1445,7 +1445,7 @@ function App() {
             </button>
 
             {/* Left Image Side */}
-            <div className="w-full md:w-1/2 bg-cream p-8 flex flex-col items-center justify-center relative min-h-[260px] md:min-h-[350px]">
+            <div className="w-full md:w-1/2 bg-cream p-6 flex flex-col items-center justify-center relative min-h-[220px] md:min-h-[350px]">
               
               {/* Image */}
               <img 
