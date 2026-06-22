@@ -28,9 +28,9 @@ const STATIC_PRODUCTS = [
     sku: "6359040_24383",
     category: "Structured",
     views: {
-      front: "/427702c4-f19a-423f-9afd-e7f54c3c3e08.png",
-      left: "/72988750-25ac-4fbc-853b-78c493ebfa04.png",
-      right: "/3005bcb5-0375-4fbe-a078-8287c8a485a4.png"
+      front: "/cream-crimson-red-front.png",
+      left: "/cream-crimson-red-left.png",
+      right: "/cream-crimson-red-right.png"
     },
     name: "The Heritage Cap",
     accentName: "Crimson Accent",
@@ -62,9 +62,9 @@ const STATIC_PRODUCTS = [
     sku: "3124731_24384",
     category: "Structured",
     views: {
-      front: "/c9ab2d28-c8af-4dcb-b4be-2ba6a6dc06e6.png",
-      left: "/3fe0d10c-cd10-410f-ab38-82c46c30ed1b.png",
-      right: "/bc5fa623-3a73-4f37-8ea0-d49c73667320.png"
+      front: "/cream-royal-blue-front.png",
+      left: "/cream-royal-blue-left.png",
+      right: "/cream-royal-blue-right.png"
     },
     name: "The Heritage Cap",
     accentName: "Royal Accent",
@@ -95,9 +95,9 @@ const STATIC_PRODUCTS = [
     variantId: "gid://shopify/ProductVariant/43088068182093", // Snapback dark-green-natural
     category: "Structured",
     views: {
-      front: "/5-panel-mid-profile-baseball-cap-dark-green-natural-front-6a0cdabf1506e.png",
-      left: "/5-panel-mid-profile-baseball-cap-dark-green-natural-left-front-6a0cdabf13a30.png",
-      right: "/5-panel-mid-profile-baseball-cap-dark-green-natural-right-front-6a0cdabf13b06.png"
+      front: "/cream-forest-green-front.png",
+      left: "/cream-forest-green-left.png",
+      right: "/cream-forest-green-right.png"
     },
     name: "The Heritage Cap",
     accentName: "Forest Accent",
@@ -129,9 +129,9 @@ const STATIC_PRODUCTS = [
     sku: "7216013_24381",
     category: "Structured",
     views: {
-      front: "/haiti-5panel-front.jpg",
-      left: "/5-panel-mid-profile-baseball-cap-dark-green-natural-left-front-6a0cdabf13a30.png",
-      right: "/5-panel-mid-profile-baseball-cap-dark-green-natural-right-front-6a0cdabf13b06.png"
+      front: "/cream-forest-classic-front.jpg",
+      left: "/cream-forest-classic-left.png",
+      right: "/cream-forest-classic-right.png"
     },
     name: "The Heritage Cap",
     accentName: "Forest Classic",
@@ -162,9 +162,9 @@ const STATIC_PRODUCTS = [
     variantId: "gid://shopify/ProductVariant/43088054550605", // Dad hat cranberry
     category: "Unstructured",
     views: {
-      front: "/0a79fa1a-0ca4-45ad-abac-f480f3685d96.png",
-      left: "/799434a2-3358-41de-b07f-66b6c8296b97.png",
-      right: "/8c9e7e49-39c8-45a6-9dd7-d98ce71bfc4f.png"
+      front: "/crimson-blue-white-accent-front.png",
+      left: "/crimson-blue-white-accent-left.png",
+      right: "/crimson-blue-white-accent-right.png"
     },
     name: "The Liberté Dad Cap",
     accentName: "Crimson Red",
@@ -195,9 +195,9 @@ const STATIC_PRODUCTS = [
     variantId: "gid://shopify/ProductVariant/43088037085261", // Dad hat white
     category: "Unstructured",
     views: {
-      front: "/classic-dad-hat-white-front-6a1af20c4a149.jpg",
-      left: "/classic-dad-hat-white-left-front-6a1af20c4abf1.jpg",
-      right: "/classic-dad-hat-white-right-front-6a1af20c4a7a0.jpg"
+      front: "/off-white-black-accent-front.jpg",
+      left: "/off-white-black-accent-left.jpg",
+      right: "/off-white-black-accent-right.jpg"
     },
     name: "The Liberté Dad Cap",
     accentName: "Off-White",
@@ -228,9 +228,9 @@ const STATIC_PRODUCTS = [
     variantId: "gid://shopify/ProductVariant/43088045703245", // Dad hat black
     category: "Unstructured",
     views: {
-      front: "/classic-dad-hat-black-front-6a1af34543064.jpg",
-      left: "/classic-dad-hat-black-left-front-6a1af34543c75.jpg",
-      right: "/classic-dad-hat-black-right-front-6a1af34543710.jpg"
+      front: "/noir-crimson-accent-front.jpg",
+      left: "/noir-crimson-accent-left.jpg",
+      right: "/noir-crimson-accent-right.jpg"
     },
     name: "The Liberté Dad Cap",
     accentName: "Noir",
@@ -261,9 +261,9 @@ const STATIC_PRODUCTS = [
     variantId: "gid://shopify/ProductVariant/43088075685965", // Snapback black-natural
     category: "Structured",
     views: {
-      front: "/5-panel-mid-profile-baseball-cap-black-natural-front-6a19e1a8d1649.jpg",
-      left: "/5-panel-mid-profile-baseball-cap-black-natural-left-front-6a19e1a8d1cbd.jpg",
-      right: "/5-panel-mid-profile-baseball-cap-black-natural-right-front-6a19e1a8d1ec3.jpg"
+      front: "/cream-black-gold-front.jpg",
+      left: "/cream-black-gold-left.jpg",
+      right: "/cream-black-gold-right.jpg"
     },
     name: "The Souverain Cap",
     accentName: "Cream & Black",
@@ -1056,7 +1056,7 @@ function App() {
                 >
                   {/* Base Image */}
                   <img 
-                    src="/5-panel-mid-profile-baseball-cap-black-natural-front-6a19e1a8d1649.jpg" 
+                    src="/cream-black-gold-front.jpg" 
                     alt="Embroidery Detail"
                     className="w-full h-full object-cover opacity-60" 
                   />
@@ -1077,7 +1077,7 @@ function App() {
                       style={{
                         left: `calc(${zoomPos.x}% - 72px)`,
                         top: `calc(${zoomPos.y}% - 72px)`,
-                        backgroundImage: 'url(/5-panel-mid-profile-baseball-cap-black-natural-front-6a19e1a8d1649.jpg)',
+                        backgroundImage: 'url(/cream-black-gold-front.jpg)',
                         backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
                         backgroundSize: '400% 400%',
                         backgroundRepeat: 'no-repeat'
