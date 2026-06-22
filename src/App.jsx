@@ -16,18 +16,20 @@ import {
   ChevronRight,
   Star,
   Loader2,
-  AlertTriangle
+  AlertTriangle,
+  Menu
 } from 'lucide-react'
 
 // Extended product list containing the new dad hats and two-tone signature caps with multi-angle views
 const STATIC_PRODUCTS = [
   {
     id: "haiti-embroidered-hat-red",
-    variantId: "gid://shopify/ProductVariant/43088077553741", // Snapback red-natural
+    variantId: "gid://shopify/ProductVariant/43088077553741",
+    sku: "6359040_24383",
     category: "Structured",
     views: {
-      front: "/72988750-25ac-4fbc-853b-78c493ebfa04.png",
-      left: "/bc5fa623-3a73-4f37-8ea0-d49c73667320.png",
+      front: "/427702c4-f19a-423f-9afd-e7f54c3c3e08.png",
+      left: "/72988750-25ac-4fbc-853b-78c493ebfa04.png",
       right: "/3005bcb5-0375-4fbe-a078-8287c8a485a4.png"
     },
     name: "The Heritage Cap",
@@ -56,12 +58,13 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-embroidered-hat-blue",
-    variantId: "gid://shopify/ProductVariant/43088071098445", // Snapback royal-natural
+    variantId: "gid://shopify/ProductVariant/43088071098445",
+    sku: "3124731_24384",
     category: "Structured",
     views: {
       front: "/c9ab2d28-c8af-4dcb-b4be-2ba6a6dc06e6.png",
-      left: "/427702c4-f19a-423f-9afd-e7f54c3c3e08.png",
-      right: "/3fe0d10c-cd10-410f-ab38-82c46c30ed1b.png"
+      left: "/3fe0d10c-cd10-410f-ab38-82c46c30ed1b.png",
+      right: "/bc5fa623-3a73-4f37-8ea0-d49c73667320.png"
     },
     name: "The Heritage Cap",
     accentName: "Royal Accent",
@@ -122,12 +125,13 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-5panel-classic",
-    variantId: "gid://shopify/ProductVariant/43081754935373", // SKU: 7216013_24381
+    variantId: "gid://shopify/ProductVariant/43081754935373",
+    sku: "7216013_24381",
     category: "Structured",
     views: {
       front: "/haiti-5panel-front.jpg",
-      left: "/haiti-5panel-side.jpg",
-      right: "/haiti-5panel-side.jpg"
+      left: "/5-panel-mid-profile-baseball-cap-dark-green-natural-left-front-6a0cdabf13a30.png",
+      right: "/5-panel-mid-profile-baseball-cap-dark-green-natural-right-front-6a0cdabf13b06.png"
     },
     name: "The Heritage Cap",
     accentName: "Forest Classic",
@@ -336,6 +340,7 @@ function App() {
     } catch { return [] }
   })
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   
   // Hero and Showcase view states
   const [activeHeroIndex, setActiveHeroIndex] = useState(6) // Set Souverain Cap as default hero
@@ -401,6 +406,7 @@ function App() {
         nodes(ids: $ids) {
           ... on ProductVariant {
             id
+            sku
             price {
               amount
             }
@@ -426,6 +432,7 @@ function App() {
               return {
                 ...staticProd,
                 variantId: staticProd.variantId,
+                sku: live.sku || staticProd.sku,
                 price: parseFloat(live.price?.amount || staticProd.price),
                 description: live.product?.description || staticProd.description,
               };
@@ -540,7 +547,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900 selection:bg-crimson selection:text-white flex flex-col font-sans">
+    <div className="min-h-screen bg-neutral-50 text-neutral-900 selection:bg-crimson selection:text-white flex flex-col font-sans overflow-x-hidden">
       
       {/* Top Banner */}
       <div className="bg-neutral-900 text-neutral-100 text-xs tracking-[0.15em] py-2.5 px-4 text-center font-medium uppercase relative z-30">
@@ -556,6 +563,15 @@ function App() {
       <header className="sticky top-0 z-20 bg-neutral-50/95 backdrop-blur-md border-b border-neutral-200/50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
+          {/* Mobile Menu Toggle */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-neutral-900 hover:text-neutral-700 transition-colors p-2 -ml-2"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 group">
             <span className="font-display font-black text-2xl tracking-tighter uppercase text-neutral-900 group-hover:text-neutral-700 transition-colors">
@@ -580,21 +596,67 @@ function App() {
             className="flex items-center gap-2.5 bg-neutral-900 hover:bg-neutral-800 text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 shadow-md shadow-neutral-900/10 hover:shadow-lg"
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>Cart</span>
+            <span className="hidden sm:inline">Cart</span>
             <span className="bg-cream text-neutral-900 font-black rounded-full w-5 h-5 flex items-center justify-center text-[10px] animate-bounce">
               {cartItemCount}
             </span>
           </button>
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white border-b border-neutral-200 shadow-lg px-6 py-6 space-y-6">
+            <nav className="flex flex-col space-y-4 text-sm font-semibold tracking-wider uppercase text-neutral-600">
+              <a 
+                href="#collection" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-neutral-900 py-2 border-b border-neutral-100"
+              >
+                Collection
+              </a>
+              <a 
+                href="#symbolism" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-neutral-900 py-2 border-b border-neutral-100"
+              >
+                Our Story
+              </a>
+              <a 
+                href="#craftsmanship" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-neutral-900 py-2 border-b border-neutral-100"
+              >
+                Craftsmanship
+              </a>
+              <a 
+                href="#faq" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-neutral-900 py-2"
+              >
+                FAQ
+              </a>
+            </nav>
+            <button 
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsCartOpen(true);
+              }}
+              className="w-full flex items-center justify-center gap-2.5 bg-neutral-900 hover:bg-neutral-800 text-white py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-all"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Cart ({cartItemCount})</span>
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-neutral-100 to-neutral-50 py-16 lg:py-24 border-b border-neutral-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-y-6 lg:gap-x-8 items-center">
             
-            {/* Left Content */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left z-10">
+            {/* Title / Header block */}
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-1 space-y-6 text-center lg:text-left z-10 order-1">
               <div className="inline-flex items-center gap-2 bg-neutral-200/60 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-neutral-700 uppercase">
                 <span className="flex h-2 w-2 relative">
                   <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${products[activeHeroIndex]?.accentBg || ''}`}></span>
@@ -614,105 +676,17 @@ function App() {
               <p className="text-neutral-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
                 Celebrating Haitian resilience and heritage through premium, high-density embroidered streetwear. A headless Printful integration brings structural perfection and detailed Choublack (Hibiscus) floristry into physical form.
               </p>
-
-              {/* Variant Details Preview */}
-              <div className="bg-cream/80 backdrop-blur-sm border border-neutral-200/60 p-5 rounded-xl max-w-lg mx-auto lg:mx-0 shadow-sm transition-all duration-300">
-                <span className="text-[10px] font-bold tracking-widest uppercase text-neutral-400 block mb-1">Active Colorway</span>
-                <span className="font-display font-extrabold text-lg block text-neutral-900">{products[activeHeroIndex]?.name || ''} — {products[activeHeroIndex]?.accentName || ''}</span>
-                <p className="text-neutral-500 text-xs mt-1 leading-normal font-light">
-
-                </p>
-              </div>
-
-              {/* Color selectors, Position selectors and CTA */}
-              <div className="space-y-6 pt-2">
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6">
-                  
-                  {/* Variant swatches */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Hat:</span>
-                    <div className="flex flex-wrap items-center gap-2 bg-neutral-200/50 p-1.5 rounded-full border border-neutral-300/30">
-                      {products.map((prod, index) => {
-                        const isLightColor = prod.hex === '#FDFBF7' || prod.hex === '#D4AF37';
-                        return (
-                          <button
-                            key={prod.id}
-                            onClick={() => { setActiveHeroIndex(index); setHeroView("front"); }}
-                            className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center cursor-pointer ${
-                              activeHeroIndex === index ? 'border-neutral-900 scale-110' : 'border-transparent opacity-70 hover:opacity-100'
-                            }`}
-                            style={{ backgroundColor: prod.hex }}
-                            title={`${prod.name} (${prod.colorway})`}
-                          >
-                            {activeHeroIndex === index && (
-                              <Check 
-                                className={`w-3.5 h-3.5 ${
-                                  isLightColor ? 'text-neutral-900' : 'text-white'
-                                }`} 
-                              />
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Hero Position selectors */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Angle:</span>
-                    <div className="flex items-center gap-1 bg-neutral-200/50 p-1 rounded-lg border border-neutral-300/30">
-                      {["front", "left", "right"].map((view) => (
-                        <button
-                          key={view}
-                          onClick={() => setHeroView(view)}
-                          className={`px-3 py-1 rounded-md text-[9px] font-bold tracking-widest uppercase transition-all duration-200 ${
-                            heroView === view
-                              ? "bg-neutral-900 text-white shadow-sm"
-                              : "text-neutral-500 hover:text-neutral-900"
-                          }`}
-                        >
-                          {view}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="flex items-center justify-center lg:justify-start gap-4">
-                  <a
-                    href="#collection"
-                    className="flex-1 sm:flex-initial text-center bg-neutral-900 hover:bg-neutral-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:shadow-xl hover:shadow-neutral-900/10 active:scale-95"
-                  >
-                    Explore Drop
-                  </a>
-                  <button
-                    onClick={() => products[activeHeroIndex] && addToCart(products[activeHeroIndex])}
-                    className="flex-1 sm:flex-initial bg-white hover:bg-neutral-100 text-neutral-900 border border-neutral-300 hover:border-neutral-400 px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
-                  >
-                    <span>Buy Now</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Heritage Note */}
-              <div className="pt-6 border-t border-neutral-200/50 flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-3 text-xs text-neutral-500 font-medium tracking-wide">
-                <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-forest" /> 100% Premium Twill</span>
-                <span className="flex items-center gap-1.5"><Award className="w-4 h-4 text-crimson" /> High-Density Stitched</span>
-                <span className="flex items-center gap-1.5"><Globe className="w-4 h-4 text-royal" /> Haitian Heritage</span>
-              </div>
             </div>
 
             {/* Right Large Hat Preview with interactive effects */}
-            <div className="lg:col-span-6 flex flex-col items-center justify-center relative">
-              
+            <div className="col-span-1 lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-5 flex flex-col items-center justify-center relative min-h-[320px] sm:min-h-[400px] order-2 z-10">
               {/* Decorative background element */}
               <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-neutral-200/40 mix-blend-multiply filter blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
 
               {/* Image Frame */}
               <div className="relative w-full max-w-lg aspect-square bg-cream rounded-3xl border border-neutral-200/60 shadow-xl overflow-hidden group">
                 <img
+                  key={`hero-${activeHeroIndex}-${heroView}`}
                   src={products[activeHeroIndex]?.views?.[heroView] || ''}
                   alt={products[activeHeroIndex]?.name || ''}
                   fetchpriority="high"
@@ -731,7 +705,101 @@ function App() {
                   <Maximize2 className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
+            </div>
 
+            {/* Color & Angle selectors */}
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-2 flex flex-wrap items-center justify-center lg:justify-start gap-6 order-3 pt-2">
+              {/* Variant swatches */}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Hat:</span>
+                <div className="flex flex-wrap items-center gap-2 bg-neutral-200/50 p-1.5 rounded-full border border-neutral-300/30">
+                  {products.map((prod, index) => {
+                    const isLightColor = prod.hex === '#FDFBF7' || prod.hex === '#D4AF37';
+                    return (
+                      <button
+                        key={prod.id}
+                        onClick={() => { setActiveHeroIndex(index); setHeroView("front"); }}
+                        className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center cursor-pointer ${
+                          activeHeroIndex === index ? 'border-neutral-900 scale-110' : 'border-transparent opacity-70 hover:opacity-100'
+                        }`}
+                        style={{ backgroundColor: prod.hex }}
+                        title={`${prod.name} (${prod.colorway})`}
+                      >
+                        {activeHeroIndex === index && (
+                          <Check 
+                            className={`w-3.5 h-3.5 ${
+                              isLightColor ? 'text-neutral-900' : 'text-white'
+                            }`} 
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Hero Position selectors */}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Angle:</span>
+                <div className="flex items-center gap-1 bg-neutral-200/50 p-1 rounded-lg border border-neutral-300/30">
+                  {["front", "left", "right"].map((view) => (
+                    <button
+                      key={view}
+                      onClick={() => setHeroView(view)}
+                      className={`px-3 py-1 rounded-md text-[9px] font-bold tracking-widest uppercase transition-all duration-200 ${
+                        heroView === view
+                          ? "bg-neutral-900 text-white shadow-sm"
+                          : "text-neutral-500 hover:text-neutral-900"
+                      }`}
+                    >
+                      {view}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Variant Details Preview (1) */}
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-3 bg-cream/80 backdrop-blur-sm border border-neutral-200/60 p-5 rounded-xl max-w-lg mx-auto lg:mx-0 shadow-sm transition-all duration-300 order-4 w-full text-center lg:text-left">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-neutral-400 block mb-1">Active Colorway</span>
+                  <span className="font-display font-extrabold text-lg block text-neutral-900">{products[activeHeroIndex]?.name || ''} — {products[activeHeroIndex]?.accentName || ''}</span>
+                </div>
+                {products[activeHeroIndex]?.sku && (
+                  <div className="text-right">
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-neutral-400 block mb-1">SKU</span>
+                    <span className="text-xs font-mono font-bold text-neutral-700 bg-neutral-200/60 px-2 py-0.5 rounded">{products[activeHeroIndex]?.sku}</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-neutral-500 text-xs mt-2 leading-relaxed font-light">
+                {products[activeHeroIndex]?.description || ''}
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-4 flex items-center justify-center lg:justify-start gap-4 order-5 w-full">
+              <a
+                href="#collection"
+                className="flex-1 sm:flex-initial text-center bg-neutral-900 hover:bg-neutral-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:shadow-xl hover:shadow-neutral-900/10 active:scale-95"
+              >
+                Explore Drop
+              </a>
+              <button
+                onClick={() => products[activeHeroIndex] && addToCart(products[activeHeroIndex])}
+                className="flex-1 sm:flex-initial bg-white hover:bg-neutral-100 text-neutral-900 border border-neutral-300 hover:border-neutral-400 px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
+              >
+                <span>Buy Now</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Heritage Note */}
+            <div className="col-span-1 lg:col-span-6 lg:col-start-1 lg:row-start-5 pt-6 border-t border-neutral-200/50 flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-3 text-xs text-neutral-500 font-medium tracking-wide order-6">
+              <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-forest" /> 100% Premium Twill</span>
+              <span className="flex items-center gap-1.5"><Award className="w-4 h-4 text-crimson" /> High-Density Stitched</span>
+              <span className="flex items-center gap-1.5"><Globe className="w-4 h-4 text-royal" /> Haitian Heritage</span>
             </div>
 
           </div>
@@ -801,17 +869,18 @@ function App() {
 
                     {/* Image */}
                     <img
+                      key={displayImage}
                       src={displayImage}
                       alt={`${product.name} – ${product.accentName} (${product.colorway})`}
-                      loading="lazy"
+                      loading="eager"
                       className="w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 
                     {/* Quick View overlay hover button */}
-                    <div className="absolute inset-0 bg-neutral-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-neutral-900/10 opacity-0 group-hover:opacity-100 active:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none group-hover:pointer-events-auto">
                       <button 
                         onClick={() => openQuickView(product)}
-                        className="bg-white hover:bg-neutral-100 text-neutral-900 text-xs font-bold tracking-widest uppercase px-5 py-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+                        className="bg-white hover:bg-neutral-100 text-neutral-900 text-xs font-bold tracking-widest uppercase px-5 py-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
                       >
                         Quick Details
                       </button>
@@ -823,9 +892,16 @@ function App() {
                     
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">
-                          {product.colorway}
-                        </span>
+                        <div>
+                          <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase block">
+                            {product.colorway}
+                          </span>
+                          {product.sku && (
+                            <span className="text-[9px] font-mono text-neutral-400 block mt-0.5">
+                              SKU: {product.sku}
+                            </span>
+                          )}
+                        </div>
                         <span className="font-display font-black text-lg text-neutral-950">
                           ${product.price.toFixed(2)}
                         </span>
@@ -847,10 +923,10 @@ function App() {
                           {["front", "left", "right"].map((view) => (
                             <button
                               key={view}
-                              onClick={() => setProductViews({
-                                ...productViews,
+                              onClick={() => setProductViews(prev => ({
+                                ...prev,
                                 [product.id]: view
-                              })}
+                              }))}
                               className={`px-2.5 py-1 rounded-md text-[9px] font-extrabold tracking-wider uppercase transition-all duration-200 ${
                                 currentView === view
                                   ? "bg-neutral-900 text-white shadow-sm"
@@ -1267,7 +1343,10 @@ function App() {
                             <h4 className="font-display font-extrabold text-sm uppercase text-neutral-900 leading-tight">{item.name}</h4>
                             <span className="font-display font-black text-sm text-neutral-900">${(item.price * item.quantity).toFixed(2)}</span>
                           </div>
-                          <span className="text-[10px] text-neutral-400 uppercase tracking-wider">{item.colorway}</span>
+                          <span className="text-[10px] text-neutral-400 uppercase tracking-wider block">{item.colorway}</span>
+                          {item.sku && (
+                            <span className="text-[9px] font-mono text-neutral-400 block">SKU: {item.sku}</span>
+                          )}
                         </div>
 
                         {/* Adjust Qty */}
@@ -1354,7 +1433,7 @@ function App() {
           />
 
           {/* Modal Content */}
-          <div ref={quickViewRef} className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-neutral-200/50 overflow-hidden flex flex-col md:flex-row z-10 animate-scale-up">
+          <div ref={quickViewRef} className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-neutral-200/50 overflow-y-auto max-h-[90vh] flex flex-col md:flex-row z-10 animate-scale-up">
             
             {/* Close Button */}
             <button 
@@ -1366,14 +1445,15 @@ function App() {
             </button>
 
             {/* Left Image Side */}
-            <div className="w-full md:w-1/2 bg-cream p-8 flex flex-col items-center justify-center relative min-h-[350px]">
+            <div className="w-full md:w-1/2 bg-cream p-8 flex flex-col items-center justify-center relative min-h-[260px] md:min-h-[350px]">
               
               {/* Image */}
               <img 
+                key={`qv-${quickViewProduct.id}-${quickViewPosition}`}
                 src={quickViewProduct.views?.[quickViewPosition] || ''} 
                 alt={`${quickViewProduct.name} – ${quickViewProduct.accentName}, ${quickViewPosition} view`}
-                loading="lazy"
-                className="w-full h-full max-h-[300px] md:max-h-[380px] object-contain"
+                loading="eager"
+                className="w-full max-h-[240px] md:max-h-[380px] object-contain"
               />
               
               {/* Position selector inside modal */}
@@ -1399,13 +1479,20 @@ function App() {
             </div>
 
             {/* Right Information Side */}
-            <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-between max-h-[90vh] md:max-h-none overflow-y-auto space-y-6">
+            <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-between space-y-6">
               
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
-                    {quickViewProduct.badge}
-                  </span>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase block">
+                      {quickViewProduct.badge}
+                    </span>
+                    {quickViewProduct.sku && (
+                      <span className="text-[9px] font-mono font-bold text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">
+                        SKU: {quickViewProduct.sku}
+                      </span>
+                    )}
+                  </div>
                   <span className="font-display font-black text-xl text-neutral-950">
                     ${quickViewProduct.price.toFixed(2)}
                   </span>
