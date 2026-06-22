@@ -11,11 +11,30 @@
 }
 
 @layer base {
+  :root {
+    color-scheme: light only;
+  }
+
   html {
     scroll-behavior: smooth;
+    color-scheme: light only;
+    background-color: #FAFAF9;
   }
   
   body {
     @apply bg-neutral-50 text-neutral-900;
+    color-scheme: light only;
+  }
+
+  /* Prevent dark mode from overriding the design */
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: light only;
+      background-color: #FAFAF9;
+    }
+    body {
+      background-color: #FAFAF9;
+      color: #171717;
+    }
   }
 }

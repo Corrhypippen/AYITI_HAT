@@ -666,11 +666,9 @@ function App() {
               </div>
 
               <h1 className="font-display font-black text-4xl sm:text-5xl xl:text-7xl uppercase text-neutral-900 leading-[0.9] tracking-tighter">
-                CULTURE <br className="hidden sm:inline" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-950 via-neutral-700 to-neutral-950">
-                  WEAVED
-                </span> IN <br />
-                EVERY FIBER<span className={products[activeHeroIndex]?.accentText || ''}>.</span>
+                <span className="block">CULTURE</span>
+                <span className="block text-neutral-600">WEAVED IN</span>
+                <span className="block">EVERY FIBER<span className={products[activeHeroIndex]?.accentText || 'text-crimson'}>.</span></span>
               </h1>
 
               <p className="text-neutral-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
