@@ -549,15 +549,7 @@ function App() {
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 selection:bg-crimson selection:text-white flex flex-col font-sans overflow-x-hidden">
       
-      {/* Top Banner */}
-      <div className="bg-neutral-900 text-neutral-100 text-xs tracking-[0.15em] py-2.5 px-4 text-center font-medium uppercase relative z-30">
-        <div className="container mx-auto flex items-center justify-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-cream animate-pulse" />
-          <span>Free shipping on orders over $75</span>
-          <span className="hidden md:inline mx-2">•</span>
-          <span className="hidden md:inline">Printful High-Density Embroidery Series</span>
-        </div>
-      </div>
+
 
       {/* Navigation */}
       <header className="sticky top-0 z-20 bg-neutral-50/95 backdrop-blur-md border-b border-neutral-200/50 transition-all duration-300">
