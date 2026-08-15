@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { shopifyClient } from './shopifyClient'
+import CheckoutModal from './components/CheckoutModal'
 import { 
   ShoppingBag, 
   ArrowRight, 
@@ -24,7 +24,6 @@ import {
 const STATIC_PRODUCTS = [
   {
     id: "haiti-embroidered-hat-red",
-    variantId: "gid://shopify/ProductVariant/43088077553741",
     sku: "6359040_24383",
     category: "Structured",
     views: {
@@ -58,7 +57,6 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-embroidered-hat-blue",
-    variantId: "gid://shopify/ProductVariant/43088071098445",
     sku: "3124731_24384",
     category: "Structured",
     views: {
@@ -92,7 +90,7 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-embroidered-hat-green",
-    variantId: "gid://shopify/ProductVariant/43088068182093", // Snapback dark-green-natural
+    sku: "heritage-forest-green",
     category: "Structured",
     views: {
       front: "/cream-forest-green-front.png",
@@ -125,7 +123,6 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-5panel-classic",
-    variantId: "gid://shopify/ProductVariant/43081754935373",
     sku: "7216013_24381",
     category: "Structured",
     views: {
@@ -159,7 +156,7 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-dad-hat-red",
-    variantId: "gid://shopify/ProductVariant/43088054550605", // Dad hat cranberry
+    sku: "dad-hat-crimson",
     category: "Unstructured",
     views: {
       front: "/crimson-blue-white-accent-front.png",
@@ -192,7 +189,7 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-dad-hat-white",
-    variantId: "gid://shopify/ProductVariant/43088037085261", // Dad hat white
+    sku: "dad-hat-offwhite",
     category: "Unstructured",
     views: {
       front: "/off-white-black-accent-front.jpg",
@@ -225,7 +222,7 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-dad-hat-black",
-    variantId: "gid://shopify/ProductVariant/43088045703245", // Dad hat black
+    sku: "dad-hat-noir",
     category: "Unstructured",
     views: {
       front: "/noir-crimson-accent-front.jpg",
@@ -258,7 +255,7 @@ const STATIC_PRODUCTS = [
   },
   {
     id: "haiti-5panel-souverain",
-    variantId: "gid://shopify/ProductVariant/43088075685965", // Snapback black-natural
+    sku: "souverain-cream-black",
     category: "Structured",
     views: {
       front: "/cream-black-gold-front.jpg",
@@ -329,8 +326,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [fetchError, setFetchError] = useState(null)
 
-  // Checkout in-flight state
-  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  // Checkout modal state
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
 
   // Cart state – hydrated from localStorage
   const [cart, setCart] = useState(() => {
@@ -396,108 +393,39 @@ function App() {
     }, 3000)
   }
 
-  // Fetch live price/description from Shopify using the hardcoded variantIds
+  // Fetch live pricing from our Express backend (which fetches from Printful)
   useEffect(() => {
-    const variantIds = STATIC_PRODUCTS.map(p => p.variantId).filter(Boolean);
-    if (variantIds.length === 0) { setIsLoading(false); return; }
-
-    const fetchVariantsQuery = `
-      query GetVariants($ids: [ID!]!) {
-        nodes(ids: $ids) {
-          ... on ProductVariant {
-            id
-            sku
-            price {
-              amount
-            }
-            product {
-              title
-              description
-            }
-          }
-        }
-      }
-    `;
-
-    shopifyClient.request(fetchVariantsQuery, { variables: { ids: variantIds } })
-      .then(({ data }) => {
-        if (data?.nodes?.length > 0) {
-          const liveMap = {};
-          data.nodes.forEach((node) => {
-            if (node?.id) liveMap[node.id] = node;
-          });
-          const mapped = STATIC_PRODUCTS.map((staticProd) => {
-            const live = liveMap[staticProd.variantId];
-            if (live) {
-              return {
-                ...staticProd,
-                variantId: staticProd.variantId,
-                sku: live.sku || staticProd.sku,
-                price: parseFloat(live.price?.amount || staticProd.price),
-                description: live.product?.description || staticProd.description,
-              };
-            }
-            return staticProd;
-          });
-          setProducts(mapped);
+    fetch('/api/products')
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(liveProducts => {
+        if (Array.isArray(liveProducts) && liveProducts.length > 0) {
+          setProducts(liveProducts);
         }
         setIsLoading(false);
       })
-      .catch((err) => {
-        console.error("Storefront API variant fetch failed, using static catalog:", err);
-        setFetchError("Could not load live pricing — showing catalog prices.");
+      .catch(err => {
+        console.error('Printful product fetch failed, using static catalog:', err);
+        setFetchError('Could not load live pricing — showing catalog prices.');
         setIsLoading(false);
       });
   }, []);
 
-  // Checkout mutation triggered when proceeding to Shopify checkout
-  const handleCheckout = async () => {
-    const lines = cart.map(item => {
-      return item.variantId ? {
-        quantity: item.quantity,
-        merchandiseId: item.variantId
-      } : null;
-    }).filter(Boolean);
+  // Open checkout modal
+  const handleCheckout = useCallback(() => {
+    setIsCartOpen(false);
+    setIsCheckoutOpen(true);
+  }, []);
 
-    if (lines.length === 0) {
-      triggerToast("Sandbox Checkout: No active Shopify variant IDs found.");
-      setTimeout(() => {
-        setCart([]);
-        setIsCartOpen(false);
-      }, 2000);
-      return;
-    }
+  const handleCheckoutClose = useCallback(() => {
+    setIsCheckoutOpen(false);
+  }, []);
 
-    setIsCheckingOut(true);
-    triggerToast("Initiating secure checkout redirect...");
-
-    const createCartMutation = `
-      mutation CreateCart($lines: [CartLineInput!]!) {
-        cartCreate(input: { lines: $lines }) {
-          cart {
-            checkoutUrl
-          }
-        }
-      }
-    `;
-
-    try {
-      const { data } = await shopifyClient.request(createCartMutation, {
-        variables: { lines },
-      });
-      
-      if (data?.cartCreate?.cart?.checkoutUrl) {
-        window.location.href = data.cartCreate.cart.checkoutUrl;
-      } else {
-        triggerToast("Failed to retrieve checkout URL from Shopify.");
-        setIsCheckingOut(false);
-      }
-    } catch (error) {
-      console.error("Shopify Checkout mutation redirect failed:", error);
-      triggerToast("Checkout failed. Check console for details.");
-      setIsCheckingOut(false);
-    }
-  };
+  const handleCheckoutSuccess = useCallback(() => {
+    setCart([]);
+  }, []);
 
   // Cart operations
   const addToCart = (product) => {
@@ -1392,18 +1320,14 @@ function App() {
 
                   <button 
                     onClick={handleCheckout}
-                    disabled={isCheckingOut}
-                    className="w-full bg-neutral-900 hover:bg-neutral-800 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-xs tracking-widest uppercase py-4 rounded-xl transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                    className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs tracking-widest uppercase py-4 rounded-xl transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2 active:scale-[0.98]"
                     aria-label="Proceed to secure checkout"
                   >
-                    {isCheckingOut ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /><span>Redirecting…</span></>
-                    ) : (
-                      <><span>Proceed To Secure Checkout</span><ArrowRight className="w-4 h-4" aria-hidden="true" /></>
-                    )}
+                    <span>Proceed To Secure Checkout</span>
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </button>
                   <p className="text-[9px] text-neutral-400 text-center font-light leading-normal">
-                    Fulfillment handled via Headless Printful REST API connection. Secure SSL Encryption active.
+                    Fulfillment handled via Printful REST API. Secure SSL Encryption active.
                   </p>
                 </div>
               )}
@@ -1543,6 +1467,16 @@ function App() {
 
           </div>
         </div>
+      )}
+
+      {/* Checkout Modal — opens when user clicks "Proceed to Secure Checkout" */}
+      {isCheckoutOpen && (
+        <CheckoutModal
+          cart={cart}
+          cartTotal={cartTotal}
+          onClose={handleCheckoutClose}
+          onSuccess={handleCheckoutSuccess}
+        />
       )}
 
     </div>

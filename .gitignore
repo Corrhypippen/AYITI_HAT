@@ -21,9 +21,10 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+# OS / Shortcuts
+*.lnk
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# Server node_modules (if any nested)
+server/node_modules/
