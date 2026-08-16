@@ -740,13 +740,7 @@ function App() {
             </p>
           </div>
 
-          {/* Fetch error banner */}
-          {fetchError && (
-            <div className="mb-8 flex items-center gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-3 text-xs font-medium">
-              <AlertTriangle className="w-4 h-4 shrink-0" />
-              <span>{fetchError}</span>
-            </div>
-          )}
+
 
           {/* Product Grid – skeleton while loading, real cards once loaded */}
           {isLoading ? (
