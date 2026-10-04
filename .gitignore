@@ -28,3 +28,6 @@ Thumbs.db
 
 # Server node_modules (if any nested)
 server/node_modules/
+
+# Temporary scratch files
+scratch/

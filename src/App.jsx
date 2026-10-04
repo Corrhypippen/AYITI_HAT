@@ -17,7 +17,8 @@ import {
   Star,
   Loader2,
   AlertTriangle,
-  Menu
+  Menu,
+  ExternalLink
 } from 'lucide-react'
 
 // Extended product list containing the new dad hats and two-tone signature caps with multi-angle views
@@ -26,6 +27,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-embroidered-hat-red",
     sku: "6359040_24383",
     category: "Structured",
+    storeLink: "https://ayitih.printful.me/product/the-heritage-cap-6a83766295b1f",
     views: {
       front: "/cream-crimson-red-front.png",
       left: "/cream-crimson-red-left.png",
@@ -59,6 +61,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-embroidered-hat-blue",
     sku: "3124731_24384",
     category: "Structured",
+    storeLink: "https://ayitih.printful.me/product/the-heritage-cap-6a83758cf2aae",
     views: {
       front: "/cream-royal-blue-front.png",
       left: "/cream-royal-blue-left.png",
@@ -92,6 +95,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-embroidered-hat-green",
     sku: "heritage-forest-green",
     category: "Structured",
+    storeLink: "https://ayitih.printful.me/product/the-heritage-cap-6a83745783952",
     views: {
       front: "/cream-forest-green-front.png",
       left: "/cream-forest-green-left.png",
@@ -125,6 +129,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-5panel-classic",
     sku: "7216013_24381",
     category: "Structured",
+    storeLink: "https://ayitih.printful.me/product/the-heritage-cap",
     views: {
       front: "/cream-forest-classic-front.jpg",
       left: "/cream-forest-classic-left.png",
@@ -158,6 +163,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-dad-hat-red",
     sku: "dad-hat-crimson",
     category: "Unstructured",
+    storeLink: "https://ayitih.printful.me/product/the-liberte-dad-cap-6a8381ef4d048",
     views: {
       front: "/crimson-blue-white-accent-front.png",
       left: "/crimson-blue-white-accent-left.png",
@@ -191,6 +197,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-dad-hat-white",
     sku: "dad-hat-offwhite",
     category: "Unstructured",
+    storeLink: "https://ayitih.printful.me/product/the-liberte-dad-cap-6a8381c252e3c",
     views: {
       front: "/off-white-black-accent-front.jpg",
       left: "/off-white-black-accent-left.jpg",
@@ -224,6 +231,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-dad-hat-black",
     sku: "dad-hat-noir",
     category: "Unstructured",
+    storeLink: "https://ayitih.printful.me/product/the-liberte-dad-cap",
     views: {
       front: "/noir-crimson-accent-front.jpg",
       left: "/noir-crimson-accent-left.jpg",
@@ -257,6 +265,7 @@ const STATIC_PRODUCTS = [
     id: "haiti-5panel-souverain",
     sku: "souverain-cream-black",
     category: "Structured",
+    storeLink: "https://ayitih.printful.me/product/the-heritage-cap-6a8375db01e50",
     views: {
       front: "/cream-black-gold-front.jpg",
       left: "/cream-black-gold-left.jpg",
@@ -494,6 +503,7 @@ function App() {
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 group">
+            <img src="/favicon.png" alt="AYITI Logo" className="w-8 h-8 object-contain group-hover:scale-105 transition-transform" />
             <span className="font-display font-black text-2xl tracking-tighter uppercase text-neutral-900 group-hover:text-neutral-700 transition-colors">
               AYITI<span className="text-crimson">.</span><span className="text-royal">H</span>
             </span>
@@ -704,13 +714,15 @@ function App() {
               >
                 Explore Drop
               </a>
-              <button
-                onClick={() => products[activeHeroIndex] && addToCart(products[activeHeroIndex])}
-                className="flex-1 bg-white hover:bg-neutral-100 text-neutral-900 border border-neutral-300 hover:border-neutral-400 px-6 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
+              <a
+                href={products[activeHeroIndex]?.storeLink || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-white hover:bg-neutral-100 text-neutral-900 border border-neutral-300 hover:border-neutral-400 px-6 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 text-center"
               >
-                <span>Buy Now</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+                <span>Go to the store</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
             </div>
 
             {/* Heritage Note */}
@@ -855,13 +867,15 @@ function App() {
                       </div>
 
                       {/* CTA Button */}
-                      <button
-                        onClick={() => addToCart(product)}
-                        className={`w-full ${product.accentBg} hover:opacity-90 text-white font-bold text-xs tracking-widest uppercase py-3.5 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-[0.98] shadow-sm`}
+                      <a
+                        href={product.storeLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-full ${product.accentBg} hover:opacity-90 text-white font-bold text-xs tracking-widest uppercase py-3.5 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-[0.98] shadow-sm text-center`}
                       >
-                        <ShoppingBag className="w-4 h-4" />
-                        <span>Add To Cart</span>
-                      </button>
+                        <ExternalLink className="w-4 h-4" />
+                        <span>Go to the store</span>
+                      </a>
                     </div>
 
                   </div>
@@ -1443,18 +1457,17 @@ function App() {
                 </div>
               </div>
 
-              {/* Add to Cart Actions */}
+              {/* Go to Store Action */}
               <div className="flex items-center gap-4">
-                <button
-                  onClick={() => {
-                    addToCart(quickViewProduct)
-                    setQuickViewProduct(null)
-                  }}
-                  className={`flex-1 ${quickViewProduct.accentBg} hover:opacity-90 text-white font-bold text-xs tracking-widest uppercase py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-[0.98] shadow-sm`}
+                <a
+                  href={quickViewProduct.storeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex-1 ${quickViewProduct.accentBg} hover:opacity-90 text-white font-bold text-xs tracking-widest uppercase py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-[0.98] shadow-sm text-center`}
                 >
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>Add To Bag</span>
-                </button>
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Go to the store</span>
+                </a>
               </div>
 
             </div>
