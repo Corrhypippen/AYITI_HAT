@@ -520,17 +520,16 @@ function App() {
             <a href="#faq" className="hover:text-neutral-900 transition-colors">FAQ</a>
           </nav>
 
-          {/* Cart Trigger */}
-          <button 
-            onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-2.5 bg-neutral-900 hover:bg-neutral-800 text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 shadow-md shadow-neutral-900/10 hover:shadow-lg"
+          {/* Go to Store Trigger */}
+          <a 
+            href="https://ayitih.printful.me/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 shadow-md shadow-neutral-900/10 hover:shadow-lg"
           >
-            <ShoppingBag className="w-4 h-4" />
-            <span className="hidden sm:inline">Cart</span>
-            <span className="bg-cream text-neutral-900 font-black rounded-full w-5 h-5 flex items-center justify-center text-[10px] animate-bounce">
-              {cartItemCount}
-            </span>
-          </button>
+            <span>Go to the store</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
         </div>
 
         {/* Mobile Navigation Dropdown */}
@@ -566,16 +565,16 @@ function App() {
                 FAQ
               </a>
             </nav>
-            <button 
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsCartOpen(true);
-              }}
-              className="w-full flex items-center justify-center gap-2.5 bg-neutral-900 hover:bg-neutral-800 text-white py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-all"
+            <a 
+              href="https://ayitih.printful.me/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-all text-center"
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Cart ({cartItemCount})</span>
-            </button>
+              <span>Go to the store</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         )}
       </header>
